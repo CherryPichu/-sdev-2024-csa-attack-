@@ -115,7 +115,7 @@ void main(int argc, char *argv[])
         // 37번 Tag 다음의 Tag pointer 위치를 찾음.
         u_char *heap_nextTag = findInsertionPoint(heap_body->tag_value, 37);
         fakeChannel = ((fakeChannel + 1) % 10) + 1;
-        u_char channelSwitchTag[5] = {0x25, 0x03, fakeChannel, 0x0d, 0x03};
+        u_char channelSwitchTag[5] = {0x25, 0x03, 0x01, fakeChannel, 0x03};
 
         // inesrt fakeChannelSwitchAnnouncement
         // printf("size : %d  " , heap_packet + heap_pkt_size - heap_nextTag);
