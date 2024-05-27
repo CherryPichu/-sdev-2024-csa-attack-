@@ -65,7 +65,7 @@ void main(int argc, char *argv[])
     const u_char *packet;
     // struct ieee80211_radiotap_header* radiotap_header;
 
-    handle = pcap_open_live(interface, BUFSIZ, 1, 1000, errbuf);
+    handle = pcap_open_live(interface, BUFSIZ, 1, 1, errbuf);
 
     if (handle == NULL)
     {
@@ -99,7 +99,7 @@ void main(int argc, char *argv[])
 
         // ===  copy packet(stack) -> (heap) ====
         int SIZE_FAKE_FRAME = 5;
-        int heap_pkt_size = header->len + SIZE_FAKE_FRAME;
+        int heap_pkt_size = header->len + SIZE_FAKE_FRAME;// len -> caplen
         unsigned char *heap_packet = (unsigned char *)malloc(heap_pkt_size);
         if (heap_packet == NULL)
         {
@@ -132,7 +132,7 @@ void main(int argc, char *argv[])
         }
         // === send Unicast end ===
 
-        if (pcap_sendpacket(handle, heap_packet, heap_pkt_size) != 0)
+        if (pcap_sendpacket(handle, heap_packet, heap_pkt_size - 4) != 0) // -4 : frame Checksum
         {
             printf("\nError Sending the paccking : %s ", pcap_geterr(handle));
         }
